@@ -7,7 +7,7 @@ async function mainPageTitleTest(){
     try {
         await driver.get('https://nsv.by/');
         const title = await driver.findElement(By.css('h1')).getText();
-        assert.include(title, 'Сеть салонов НА СВЯЗИ!', 'Заголовок присутствует на главной странице');
+        assert.include(title, 'Сеть салонов НА\'СВЯЗИ!', 'Заголовок присутствует на главной странице');
     } finally {
         await driver.quit();
     }
@@ -31,7 +31,7 @@ async function contactPageTest(){
         await driver.findElement(By.linkText('Контакты')).click();
         await driver.wait(until.elementLocated(By.className('ga_ym_t')), 20000);
         const phone = await driver.findElement(By.className('ga_ym_t')).getText();
-        assert.include(phone, '+375', 'Номер телефона отображается на странице контактов');
+        assert.include(phone, '8029', 'Номер телефона отображается на странице контактов');
     } finally {
         await driver.quit();
     }
