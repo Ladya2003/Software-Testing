@@ -7,7 +7,7 @@ async function searchAndCheckTest(){
     try {
         await driver.get('https://nsv.by/');
 
-        const searchInput = await driver.findElement(By.id('title-search-input_fixed'));
+        const searchInput = await driver.findElement(By.css('input'));
         await searchInput.sendKeys('Apple', Key.ENTER);
 
         await driver.wait(until.elementLocated(By.css('span')), 10000);
