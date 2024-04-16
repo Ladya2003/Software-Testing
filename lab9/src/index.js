@@ -1,4 +1,4 @@
-const {Builder, By, Key, until} = require('selenium-webdriver');
+const { Builder, By, Key, until } = require('selenium-webdriver');
 const assert = require('chai').assert;
 
 async function searchAndCheckTest() {
@@ -7,7 +7,8 @@ async function searchAndCheckTest() {
     try {
         await driver.get('https://nsv.by/');
 
-        const searchInput = await driver.findElement(By.id('title-search-input_fixed'));
+        const searchInput = await driver.wait(until.elementLocated(By.id('title-search-input_fixed')), 10000);
+        
         await searchInput.sendKeys('Apple', Key.ENTER);
 
         await driver.wait(until.urlContains('Apple'), 10000);
@@ -27,6 +28,7 @@ describe('NSV Tests', function() {
         await searchAndCheckTest();
     });
 });
+
 
 async function noveltiesTest() {
     let driver = await new Builder().forBrowser('chrome').build();
