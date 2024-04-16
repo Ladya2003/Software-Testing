@@ -1,20 +1,27 @@
 const { Builder, By, Key, until } = require('selenium-webdriver');
 const assert = require('chai').assert;
 
-async function searchAndCheckTest() {
+async function addToCartAndCheckTest() {
     let driver = await new Builder().forBrowser('chrome').build();
 
     try {
-        await driver.get('https://nsv.by/');
+        await driver.get('https://nsv.by/catalog/mobilnye-telefony/nothing-phone-2-12gb-256gb-belyj/');
 
-        const searchInput = await driver.wait(until.elementLocated(By.id('title-search-input_fixed')), 10000);
-        
-        await searchInput.sendKeys('Apple', Key.ENTER);
+        const addToCartButton = await driver.wait(until.elementLocated(By.css('.btn-lg.w_icons.to-cart.btn.btn-default.transition_bg.animate-load')), 10000);
+        await addToCartButton.click();
 
-        await driver.wait(until.urlContains('Apple'), 10000);
+        await driver.sleep(5000);
 
-        const currentUrl = await driver.getCurrentUrl();
-        assert.include(currentUrl.toLowerCase(), 'apple', 'URL should contain the word "Apple"');
+        const cartIcon = await driver.findElement(By.id('BasketHeaderIcon'));
+        await cartIcon.click();
+
+        const cartCountElement = await driver.wait(until.elementLocated(By.css('.cart-title-count')), 10000);
+
+        const cartCountText = await cartCountElement.getText();
+
+        const cartCount = parseInt(cartCountText);
+
+        assert.strictEqual(cartCount, 1, 'Cart count should be equal to 1');
 
     } finally {
         await driver.quit();
@@ -24,11 +31,10 @@ async function searchAndCheckTest() {
 describe('NSV Tests', function() {
     this.timeout(50000);
 
-    it('URL should contain the word "Apple" after search', async () => {
-        await searchAndCheckTest();
+    it('Cart count should be equal to 1 after adding an item to cart', async () => {
+        await addToCartAndCheckTest();
     });
 });
-
 
 async function noveltiesTest() {
     let driver = await new Builder().forBrowser('chrome').build();
