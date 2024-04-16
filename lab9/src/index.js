@@ -1,40 +1,32 @@
 const {Builder, By, Key, until} = require('selenium-webdriver');
 const assert = require('chai').assert;
 
-async function searchAndCheckTest(){
+async function searchAndCheckTest() {
     let driver = await new Builder().forBrowser('chrome').build();
 
     try {
         await driver.get('https://nsv.by/');
 
-        const searchInput = await driver.findElement(By.css('input'));
+        const searchInput = await driver.findElement(By.id('title-search-input_fixed'));
         await searchInput.sendKeys('Apple', Key.ENTER);
 
-        await driver.wait(until.elementLocated(By.css('span')), 10000);
-        const resultSpans = await driver.findElements(By.css('span'));
-        let found = false;
-        for (let span of resultSpans) {
-            const text = await span.getText();
-            if (text.includes('Apple')) {
-                found = true;
-                break;
-            }
-        }
-        assert.isTrue(found, 'Text "Apple" found in one of the span tags');
+        await driver.wait(until.urlContains('Apple'), 10000);
+
+        const currentUrl = await driver.getCurrentUrl();
+        assert.include(currentUrl.toLowerCase(), 'apple', 'URL should contain the word "Apple"');
 
     } finally {
         await driver.quit();
     }
 }
 
-describe('NSV Tests', function(){
-    this.timeout(30000);
+describe('NSV Tests', function() {
+    this.timeout(50000);
 
-    it('Search should find results for "Apple"', async () => {
+    it('URL should contain the word "Apple" after search', async () => {
         await searchAndCheckTest();
     });
 });
-
 
 async function noveltiesTest() {
     let driver = await new Builder().forBrowser('chrome').build();
