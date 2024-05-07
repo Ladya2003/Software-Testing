@@ -1,0 +1,1 @@
+{"uuid":"9b7c0cbf-78f6-475f-86b7-1bba1b2bda37","name":"test.CommonConditions.setUp","children":["87120fc8-fb7d-449c-a257-618c3f49c2c3"],"description":"","befores":[{"name":"setUp","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1715015621796,"stop":1715015622628}],"afters":[],"start":1715015621796,"stop":1715015622628}
